@@ -1,5 +1,6 @@
-# blogTor ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
-
+# blogTor
+# ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
+<!--   -->
 A blog site powered by NextJS
 
 
