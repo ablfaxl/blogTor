@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Cookies from 'universal-cookie';
 import axios, { AxiosResponse } from 'axios';
+import { ResData, Response2TYpes } from '@/type/types';
 import { BsTwitter } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
 
@@ -12,42 +13,6 @@ type Inputs = {
   username: string;
 };
 
-type ResData = {
-  token: string;
-  data: {
-    token: string;
-  };
-  status: number;
-  statusText: string;
-  headers: {
-    'content-length': string;
-    'content-type': string;
-  };
-  config: {
-    transitional: {
-      silentJSONParsing: boolean;
-      forcedJSONParsing: boolean;
-      clarifyTimeoutError: boolean;
-    };
-    adapter: string[];
-    transformRequest: null[];
-    transformResponse: null[];
-    timeout: number;
-    xsrfCookieName: string;
-    xsrfHeaderName: string;
-    maxContentLength: number;
-    maxBodyLength: number;
-    env: {};
-    headers: {
-      Accept: string;
-      'Content-Type': string;
-    };
-    method: string;
-    url: string;
-    data: string;
-  };
-  request: {};
-};
 const cookies = new Cookies();
 
 const SingUp = () => {
@@ -61,6 +26,7 @@ const SingUp = () => {
     watch,
     formState: { errors },
   } = useForm<Inputs>({ resolver: yupResolver(schema) });
+  
   const onSubmit: SubmitHandler<Inputs> = async data => {
     const res: void | AxiosResponse<ResData> = await axios
       .post('http://localhost:4000/user/signup', {
@@ -78,7 +44,7 @@ const SingUp = () => {
       cookies.set('token', res.data.token);
       const token: string = cookies.get('token');
 
-      const res2 = await axios.post(
+      const res2: void | AxiosResponse<Response2TYpes> = await axios.post(
         'http://localhost:4000/user/me',
         {},
         {
@@ -87,11 +53,10 @@ const SingUp = () => {
           },
         }
       );
-      console.log(res2.data);
+      console.log(res2);
       // window.location.assign('http://localhost:3000')
-      return alert("You've logged in successfully");
+      return alert('Your registration was successful');
     }
-    console.log(data);
   };
 
   return (

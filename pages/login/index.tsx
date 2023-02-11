@@ -1,8 +1,67 @@
 import Link from 'next/link';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import Cookies from 'universal-cookie';
+import axios, { AxiosResponse } from 'axios';
 import { BsTwitter } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
+import { ResData, Response2TYpes } from '@/type/types';
 
-function Login() {
+type Inputs = {
+  username: string;
+  password: string;
+};
+
+const cookies = new Cookies();
+
+const Login = (): JSX.Element => {
+  let schema = yup.object().shape({
+    username: yup.string().min(4).max(8).required('Entrer Your username'),
+    password: yup.string().min(4).max(4).required('Entrer Your password'),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>({ resolver: yupResolver(schema) });
+
+  const onSubmit: SubmitHandler<Inputs> = async data => {
+    const res: void | AxiosResponse<ResData> = await axios
+      .post('http://localhost:4000/user/login', {
+        username: data.username,
+        password: data.password,
+      })
+      .catch(error => {
+        console.log(error.response.data.msg);
+        if (error.response.data.msg === 'password doesnt match')
+          return alert('Wrong password please enter " 1111 "');
+        return alert(`${error.response.data.msg}`); //BUG tostify doesn't work
+      });
+    console.log('res', res);
+    if (!res) return;
+
+    if (res.data.token !== undefined) {
+      cookies.set('token', res.data.token);
+      const token: string = cookies.get('token');
+
+      const res2: void | AxiosResponse<Response2TYpes> = await axios.post(
+        'http://localhost:4000/user/me',
+        {},
+        {
+          headers: {
+            auth: `ut ${token}`,
+          },
+        }
+      );
+      console.log('res2', res2);
+      // window.location.assign('http://localhost:3000')
+      return alert('Your registration was successful');
+    }
+  };
+
   return (
     <div className="flex items-center min-h-screen p-4 bg-gray-100 lg:justify-center">
       <div className="flex flex-col overflow-hidden bg-white rounded-md shadow-lg max md:flex-row md:flex-1 lg:max-w-screen-md">
@@ -43,16 +102,22 @@ function Login() {
           <h3 className="my-4 text-2xl font-semibold text-gray-700">
             Account Login
           </h3>
-          <form action="#" className="flex flex-col space-y-5">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col space-y-5"
+          >
             <div className="flex flex-col space-y-1">
               <label className="text-sm font-semibold text-gray-500">
-                Email address
+                Username
               </label>
               <input
-                type="email"
-                id="email"
+                type="text"
+                {...register('username', { required: true })}
                 className="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
               />
+              {errors.username?.message && (
+                <p className="text-red-900">please enter your name</p>
+              )}
             </div>
             <div className="flex flex-col space-y-1">
               <div className="flex items-center justify-between">
@@ -68,9 +133,12 @@ function Login() {
               </div>
               <input
                 type="password"
-                id="password"
+                {...register('password', { required: true })}
                 className="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
               />
+              {errors.password?.message && (
+                <p className="text-red-900">please enter your name</p>
+              )}
             </div>
             <div className="flex items-center space-x-2">
               <input
@@ -124,6 +192,6 @@ function Login() {
       </div>
     </div>
   );
-}
+};
 
 export default Login;
