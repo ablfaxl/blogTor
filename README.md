@@ -1,4 +1,6 @@
 # blogTor
+# ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
+<!--   -->
 A blog site powered by NextJS
 
 
@@ -6,12 +8,14 @@ A blog site powered by NextJS
 ## Getting Started
 
 run the development server:
-
+<div>
 npm run dev
-# or
+ </div>
+ or
+
+ 
 yarn dev
-# or
-pnpm dev
+
 
 ```
 
