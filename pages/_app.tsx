@@ -1,10 +1,57 @@
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import { wrapper, store } from '@/feature/store';
+import { Provider, useDispatch } from 'react-redux';
+import Cookies from 'universal-cookie';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+import { setCurrentUser } from '@/feature/userSlice';
+import { useEffect } from 'react';
+import Layout from '@/src/components/layout/WebLayout';
+import type { ReactElement, ReactNode } from 'react';
+import type { NextPage } from 'next';
 
-export default function App({ Component, pageProps }: AppProps) {
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
 
-  return (
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+const cookie = new Cookies();
+
+function App({ Component, pageProps }: AppPropsWithLayout) {
+  const renderWithLayout =
+    Component.getLayout ||
+    function (page) {
+      return <Layout>{page}</Layout>;
+    };
+  const dispatch = useDispatch();
+  const cookie: string = new Cookies().get('token');
+  const me = async () => {
+    await axios({
+      method: 'post',
+      url: 'http://localhost:4000/user/me',
+      headers: {
+        auth: `ut ${cookie}`,
+      },
+    })
+      .then(res => {
+        console.log(res.data);
+        dispatch(setCurrentUser(res.data));
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    me();
+  }, [cookie]);
+  return renderWithLayout(
     <>
       <Head>
         <title>BlogTor</title>
@@ -12,7 +59,23 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Component {...pageProps} />
+      <Provider store={store}>
+        <ToastContainer
+          position="bottom-left"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
+        <Component {...pageProps} />
+      </Provider>
     </>
   );
 }
+
+export default wrapper.withRedux(App);

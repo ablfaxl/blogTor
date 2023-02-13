@@ -3,10 +3,14 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Cookies from 'universal-cookie';
+import { useDispatch } from 'react-redux';
 import axios, { AxiosResponse } from 'axios';
 import { BsTwitter } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
 import { ResData, Response2TYpes } from '@/type/types';
+import { setCurrentUser } from '@/feature/userSlice';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
 
 type Inputs = {
   username: string;
@@ -15,7 +19,10 @@ type Inputs = {
 
 const cookies = new Cookies();
 
-const Login = (): JSX.Element => {
+const Login = () => {
+  const dispatch = useDispatch();
+  const route = useRouter();
+
   let schema = yup.object().shape({
     username: yup.string().min(4).max(8).required('Entrer Your username'),
     password: yup.string().min(4).max(4).required('Entrer Your password'),
@@ -34,11 +41,13 @@ const Login = (): JSX.Element => {
         username: data.username,
         password: data.password,
       })
-      .catch(error => {
+      .catch((error: any) => {
         console.log(error.response.data.msg);
-        if (error.response.data.msg === 'password doesnt match')
-          return alert('Wrong password please enter " 1111 "');
-        return alert(`${error.response.data.msg}`); //BUG tostify doesn't work
+        if (error.response.data.msg === 'password doesnt match') {
+          toast.error('Wrong password please enter " 1111 "');
+        } else {
+          toast.error(`${error.response.data.msg}`);
+        }
       });
     console.log('res', res);
     if (!res) return;
@@ -46,19 +55,8 @@ const Login = (): JSX.Element => {
     if (res.data.token !== undefined) {
       cookies.set('token', res.data.token);
       const token: string = cookies.get('token');
-
-      const res2: void | AxiosResponse<Response2TYpes> = await axios.post(
-        'http://localhost:4000/user/me',
-        {},
-        {
-          headers: {
-            auth: `ut ${token}`,
-          },
-        }
-      );
-      console.log('res2', res2);
-      // window.location.assign('http://localhost:3000')
-      return alert('Your registration was successful');
+      toast.success('Your registration was successful');
+      route.push('/');
     }
   };
 
@@ -116,7 +114,7 @@ const Login = (): JSX.Element => {
                 className="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
               />
               {errors.username?.message && (
-                <p className="text-red-900">please enter your name</p>
+                <p className="text-red-900">please enter your username</p>
               )}
             </div>
             <div className="flex flex-col space-y-1">
@@ -136,8 +134,9 @@ const Login = (): JSX.Element => {
                 {...register('password', { required: true })}
                 className="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
               />
+
               {errors.password?.message && (
-                <p className="text-red-900">please enter your name</p>
+                <p className="text-red-900">please enter your password</p>
               )}
             </div>
             <div className="flex items-center space-x-2">

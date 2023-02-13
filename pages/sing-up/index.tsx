@@ -3,10 +3,14 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Cookies from 'universal-cookie';
+import { useDispatch } from 'react-redux';
+import { setCurrentUser } from '@/feature/userSlice';
 import axios, { AxiosResponse } from 'axios';
 import { ResData, Response2TYpes } from '@/type/types';
 import { BsTwitter } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
 
 type Inputs = {
   name: string;
@@ -16,6 +20,8 @@ type Inputs = {
 const cookies = new Cookies();
 
 const SingUp = () => {
+  const route = useRouter();
+  
   let schema = yup.object().shape({
     name: yup.string().min(4).max(8).required('Entrer Your Name'),
     username: yup.string().min(4).max(8).required('Entrer Your username'),
@@ -26,7 +32,7 @@ const SingUp = () => {
     watch,
     formState: { errors },
   } = useForm<Inputs>({ resolver: yupResolver(schema) });
-  
+
   const onSubmit: SubmitHandler<Inputs> = async data => {
     const res: void | AxiosResponse<ResData> = await axios
       .post('http://localhost:4000/user/signup', {
@@ -35,7 +41,7 @@ const SingUp = () => {
       })
       .catch(error => {
         console.log(error.response.data.msg);
-        return alert(`${error.response.data.msg}`);
+        toast.error(`${error.response.data.msg}`);
       });
     console.log(res);
     if (!res) return;
@@ -43,19 +49,8 @@ const SingUp = () => {
     if (res.data.token !== undefined) {
       cookies.set('token', res.data.token);
       const token: string = cookies.get('token');
-
-      const res2: void | AxiosResponse<Response2TYpes> = await axios.post(
-        'http://localhost:4000/user/me',
-        {},
-        {
-          headers: {
-            auth: `ut ${token}`,
-          },
-        }
-      );
-      console.log(res2);
-      // window.location.assign('http://localhost:3000')
-      return alert('Your registration was successful');
+      toast.success('Your registration was successful');
+      route.push('/'); 
     }
   };
 
