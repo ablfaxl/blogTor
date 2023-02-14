@@ -35,17 +35,9 @@ export type ResData = {
   request: {};
 };
 
-export type Response2TYpes = {
+export type ResponseUpdateProfileTYpes = {
   data: {
-    _id: string;
-    username: string;
-    name: string;
-    bio: string;
-    blogs: [];
-    avatar: string;
-    averageScore: number;
-    createdAt: string;
-    updatedAt: string;
+    msg: string;
   };
   status: number;
   statusText: string;

@@ -14,7 +14,7 @@ export interface CurrentUserType {
     createdAt: string;
     name: string;
     updatedAt: string;
-    username: string;
+    username: string | undefined;
     _id: string;
   } | null;
 }
@@ -30,12 +30,15 @@ export const userSlice = createSlice({
     setCurrentUser: (state, action) => {
       state.currentUser = action.payload;
     },
-    logOut: (state) => {
+    editCurrentUser: (state, action) => {
+      state.currentUser = action.payload;
+    },
+    logOut: state => {
       state.currentUser = null;
       cookie.remove('token');
     },
   },
 });
 
-export const { setCurrentUser, logOut } = userSlice.actions;
+export const { setCurrentUser, logOut, editCurrentUser } = userSlice.actions;
 export default userSlice.reducer;

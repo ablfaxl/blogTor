@@ -3,7 +3,7 @@ import type { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/feature/store';
 
-export default function AlternativeLayoutPage() {
+export default function DasboardInfo() {
   const name = useSelector(
     (state: RootState) => state.userSlice.currentUser?.username
   );
@@ -14,6 +14,6 @@ export default function AlternativeLayoutPage() {
   );
 }
 
-AlternativeLayoutPage.getLayout = function (page: ReactElement) {
+DasboardInfo.getLayout = function (page: ReactElement) {
   return <DashboardLayout>{page}</DashboardLayout>;
 };

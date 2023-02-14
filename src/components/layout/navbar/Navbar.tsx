@@ -29,7 +29,7 @@ export const Navbar = () => {
           <>
             <div className="dropdown dropdown-hover">
               <label className="btn my-2 bg-transparent" tabIndex={0}>
-                <p>{user.currentUser?.name}</p>
+                <p>{user.currentUser?.username}</p>
               </label>
               <div className="dropdown-menu dropdown-menu-bottom-left w-[70px]">
                 <div className="dropdown-item text-sm">
@@ -42,7 +42,10 @@ export const Navbar = () => {
                             currentTarget.src =
                               'https://t3.ftcdn.net/jpg/01/09/00/64/360_F_109006426_388PagqielgjFTAMgW59jRaDmPJvSBUL.jpg';
                           }}
-                          src={img}
+                          // src={img}
+                          src={
+                            'http://localhost:4000/' + user?.currentUser.avatar
+                          }
                           alt="avatar"
                         />
                       </div>
