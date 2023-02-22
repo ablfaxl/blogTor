@@ -1,9 +1,21 @@
-import { HomePage } from './home/HomePage';
+import { HomePage } from '../src/components/home/HomePage';
+import { BlogsTypes } from '@/type/types';
 
-export default function Home() {
+const Home: React.FC<BlogsTypes> = ({ data }) => {
   return (
     <>
-      <HomePage />
+      <HomePage data={data} />
     </>
   );
+};
+export default Home;
+
+export async function getServerSideProps() {
+  const res = await fetch(`http://localhost:4000/blog`);
+  const data = await res.json();
+  return {
+    props: {
+      data,
+    },
+  };
 }

@@ -1,4 +1,4 @@
-import EditProfile from '@/src/components/dashboard/Edit_Profile';
+import EditProfile from '@/src/components/dashboard/edit-profile/Edit_Profile';
 import DashboardLayout from '@/src/components/layout/DashboardLayout';
 import { ReactElement } from 'react';
 

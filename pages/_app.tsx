@@ -1,8 +1,8 @@
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { wrapper, store } from '@/feature/store';
-import { Provider, useDispatch } from 'react-redux';
+import { wrapper, store, RootState } from '@/feature/store';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import Cookies from 'universal-cookie';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -24,6 +24,13 @@ type AppPropsWithLayout = AppProps & {
 const cookie = new Cookies();
 
 function App({ Component, pageProps }: AppPropsWithLayout) {
+  const userEdited = useSelector(
+    (state: RootState) => state.userSlice.userEdited
+  );
+  const updateAvatar = useSelector(
+    (state: RootState) => state.userSlice.updateAvatar
+  );
+
   const renderWithLayout =
     Component.getLayout ||
     function (page) {
@@ -50,7 +57,9 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
 
   useEffect(() => {
     me();
-  }, [cookie]);
+  }, [cookie, userEdited, updateAvatar]);
+
+  
   return renderWithLayout(
     <>
       <Head>

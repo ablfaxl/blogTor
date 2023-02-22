@@ -1,69 +1,77 @@
 import { SetStateAction, useEffect, useState } from 'react';
 import { RootState } from '@/feature/store';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
 import Cookies from 'universal-cookie';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { updateAvatar } from '@/feature/userSlice';
+import { useRouter } from 'next/router';
+
+interface AvatarInputTypes {
+  file: any;
+}
 
 function UpdateAvatar() {
-  const [file, setFile] = useState('');
-  const cookie = new Cookies();
-  const token = cookie.get('token');
-  const user = useSelector((state: RootState) => state.userSlice.currentUser);
+  const route = useRouter()
+  const dispatch = useDispatch();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<AvatarInputTypes>();
 
-  const submitAvatar = async () => {
+  const cookie: string = new Cookies().get('token');
+  const currentUser = useSelector(
+    (state: RootState) => state.userSlice.currentUser
+  );
+
+  const submitAvatar: SubmitHandler<AvatarInputTypes> = async data => {
     try {
-      console.log(file);
-
-      if (!file) return;
+      if (!data.file[0]) return;
 
       const formData = new FormData();
-      formData.append('avatar', file);
+      formData.append('avatar', data.file[0]);
 
-      fetch('http://localhost:4000/user/update-avatar', {
+      await fetch('http://localhost:4000/user/update-avatar', {
         method: 'POST',
         headers: {
-          auth: `ut ${token}`,
+          auth: `ut ${cookie}`,
         },
         body: formData,
-      })
-        .then(res => {
-          console.log('res', res);
-        })
-        .then(data => {
-          console.log('data', data);
-        });
+      }).then(res => {
+        if (res.ok === true) {
+          toast.success('Your avatar has been successfully updated');
+        } else {
+          toast.error('Error! Somthing went Wrong!!');
+        }
+      });
     } catch (error) {
       console.log('lol');
     }
+    dispatch(updateAvatar(data.file[0].name));
+    route.back();
   };
-  useEffect(() => {
-    submitAvatar();
-  }, [file]);
-
   return (
     <div className="flex items-center justify-center pt-[2rem]">
       <div className="card card-image-cover">
-        <div className="card-body">
+        <form onSubmit={handleSubmit(submitAvatar)} className="card-body">
           <input
             className="input-ghost-success input-lg input p-1"
-            onChange={(e: any) => setFile(e.target.files[0])}
+            {...register('file')}
             placeholder="Success"
             type={'file'}
           />
-          <button
-            onClick={submitAvatar}
-            className="btn-secondary btn  bg-[#03C988]"
-          >
+          <button className="btn-secondary btn  bg-[#03C988]">
             Update Avatar
           </button>
-        </div>
+        </form>
         <img
-          src={'http://localhost:4000/' + user?.avatar}
-          //   src={
-          //     user?.avatar
-          //       ? {'http://localhost:4000/' + userData.avatar}
-          //       : 'https://t3.ftcdn.net/jpg/01/09/00/64/360_F_109006426_388PagqielgjFTAMgW59jRaDmPJvSBUL.jpg'
-          //   }
+          src={
+            currentUser?.avatar
+              ? 'http://localhost:4000/' + currentUser.avatar
+              : 'https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg'
+          }
           alt="/"
         />
       </div>

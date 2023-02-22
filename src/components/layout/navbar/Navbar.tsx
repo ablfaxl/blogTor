@@ -3,8 +3,7 @@ import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/feature/store';
 import { RiLoginCircleLine, RiLogoutCircleRLine } from 'react-icons/ri';
-import { CurrentUserType, logOut } from '@/feature/userSlice';
-// link panel o bzn chjori do ta layout dashte bashim dropdown drst kn
+import { logOut } from '@/feature/userSlice';
 
 export const Navbar = () => {
   const [img, setImg] = useState<string>('');

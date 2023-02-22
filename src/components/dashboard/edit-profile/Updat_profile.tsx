@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import axios, { AxiosResponse } from 'axios';
 import Cookies from 'universal-cookie';
 import { useDispatch, useSelector } from 'react-redux';
-import { editCurrentUser } from '@/feature/userSlice';
+import { editUser } from '@/feature/userSlice';
 import { ResponseUpdateProfileTYpes } from '@/type/types';
 
 type InputsInfoTypes = {
@@ -64,12 +64,9 @@ const Updat_profile: React.FC<{ usernameProp: string | undefined }> = ({
       });
     }
     dispatch(
-      editCurrentUser({
-        name: data.name,
-        bio: data.bio,
-        username: usernameProp,
-      })
+      editUser({ name: data.name, bio: data.bio, username: usernameProp })
     );
+    route.back();
   };
   return (
     <div>

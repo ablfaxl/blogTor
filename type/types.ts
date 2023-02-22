@@ -1,3 +1,5 @@
+import { type } from 'os';
+
 export type ResData = {
   token: string;
   data: {
@@ -68,3 +70,86 @@ export type ResponseUpdateProfileTYpes = {
   };
   request: {};
 };
+
+export type MyBlogTypes = {
+  _id: string;
+  title: string;
+  content: string;
+  creatorId: string;
+  imgurl: string;
+  averageScore: number;
+  createdAt: string;
+  updatedAt: string;
+  rateCount: number;
+};
+
+export type MyBlogPropsTypes = {
+  data: {
+    _id: string;
+    title: string;
+    content: string;
+    creatorId: string;
+    imgurl: string;
+    averageScore: number;
+    createdAt: string;
+    updatedAt: string;
+    rateCount: number;
+  };
+};
+
+export interface BlogsTypes {
+  data: [
+    {
+      _id: string;
+      title: string;
+      content: string;
+      creatorId: string;
+      imgurl: string;
+      averageScore: number;
+      createdAt: string;
+      updatedAt: string;
+      creator: {
+        _id: string;
+        username: string;
+        name: string;
+        bio: string;
+        blogs: string[];
+        avatar: string;
+        averageScore: number;
+        createdAt: string;
+        updatedAt: string;
+      };
+      rateCount: number;
+    }
+  ];
+}
+
+export type BLogMapTypes = {
+  _id: string;
+  title: string;
+  content: string;
+  creatorId: string;
+  imgurl: string;
+  averageScore: number;
+  createdAt: string;
+  updatedAt: string;
+  creator: {
+    _id: string;
+    username: string;
+    name: string;
+    bio: string;
+    blogs: string[];
+    avatar: string;
+    averageScore: number;
+    createdAt: string;
+    updatedAt: string;
+  };
+  rateCount: number;
+};
+
+export interface ContextTypes {
+  params: { id: string };
+  locales: undefined;
+  locale: undefined;
+  defaultLocale: undefined;
+}

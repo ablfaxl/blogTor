@@ -6,7 +6,7 @@ import Cookies from 'universal-cookie';
 import { useDispatch } from 'react-redux';
 import { setCurrentUser } from '@/feature/userSlice';
 import axios, { AxiosResponse } from 'axios';
-import { ResData, Response2TYpes } from '@/type/types';
+import { ResData } from '@/type/types';
 import { BsTwitter } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'react-toastify';

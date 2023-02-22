@@ -17,10 +17,14 @@ export interface CurrentUserType {
     username: string | undefined;
     _id: string;
   } | null;
+  userEdited: { name: string; bio: string };
+  updateAvatar: string;
 }
 
 const initialState: CurrentUserType = {
   currentUser: null,
+  userEdited: { name: '', bio: '' },
+  updateAvatar: '',
 };
 
 export const userSlice = createSlice({
@@ -30,15 +34,19 @@ export const userSlice = createSlice({
     setCurrentUser: (state, action) => {
       state.currentUser = action.payload;
     },
-    editCurrentUser: (state, action) => {
-      state.currentUser = action.payload;
-    },
     logOut: state => {
       state.currentUser = null;
       cookie.remove('token');
     },
+    editUser(state, action) {
+      state.userEdited = action.payload;
+    },
+    updateAvatar(state, action) {
+      state.updateAvatar = action.payload;
+    },
   },
 });
 
-export const { setCurrentUser, logOut, editCurrentUser } = userSlice.actions;
+export const { setCurrentUser, logOut, editUser, updateAvatar } =
+  userSlice.actions;
 export default userSlice.reducer;
