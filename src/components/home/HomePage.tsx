@@ -4,6 +4,8 @@ import Link from 'next/link';
 import ReactStars from 'react-rating-stars-component';
 
 export const HomePage: React.FC<BlogsTypes> = ({ data }) => {
+  // const avatar = data.data.f
+
   return (
     <>
       <div className="relative w-full h-full flex items-center justify-center">
@@ -23,12 +25,19 @@ export const HomePage: React.FC<BlogsTypes> = ({ data }) => {
                     passHref
                   >
                     <div className="bg-[#232323] w-[350px] h-[300px] flex flex-col items-center hover:scale-105 duration-500 hover:text-[#03C988]">
-                      <div className="flex flex-row items-center">
-                        <div className="avatar avatar-sm avatar-square">
-                          {/* <img
-                            src={'http://localhost:4000/' + }
-                            alt="avatar"
-                          /> */}
+                      <div className="flex flex-row items-center gap-2 p-2">
+                        <div className="avatar avatar-[15px] avatar-square">
+                          <span
+                            className="tooltip tooltip-left"
+                            data-tooltip={data.creator.username}
+                          >
+                            <img
+                              src={
+                                'http://localhost:4000/' + data.creator.avatar
+                              }
+                              alt="avatar"
+                            />
+                          </span>
                         </div>
                         <h2 className="text-xl py-3 font-bold">{data.title}</h2>
                       </div>

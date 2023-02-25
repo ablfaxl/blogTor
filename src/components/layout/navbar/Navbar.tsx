@@ -17,11 +17,23 @@ export const Navbar = () => {
   return (
     <div className="navbar navbar-sticky">
       <div className="navbar-start">
-        <Link href={'/'} passHref>
-          <p className="navbar-item font-mono text-lg text-[#03C988]">
-            BLOG-TOR
+        <div className="flex items-center">
+          <Link href={'/'} passHref>
+            <p className="navbar-item font-mono text-lg text-[#03C988]">
+              BLOG-TOR
+            </p>
+          </Link>
+          <Link href={'/top_blog'} passHref>
+          <p className="navbar-item font-mono text-sm text-[#ffffff]">
+            TOP-BLOG
           </p>
-        </Link>
+          </Link>
+          <Link href={'/top_writer'} passHref>
+          <p className="navbar-item font-mono text-sm text-[#ffffff]">
+            TOP-WRITER
+          </p>
+          </Link>
+        </div>
       </div>
       <div className="navbar-end">
         {user.currentUser ? (
@@ -41,7 +53,7 @@ export const Navbar = () => {
                             currentTarget.src =
                               'https://t3.ftcdn.net/jpg/01/09/00/64/360_F_109006426_388PagqielgjFTAMgW59jRaDmPJvSBUL.jpg';
                           }}
-                          // src={img}
+                
                           src={
                             'http://localhost:4000/' + user?.currentUser.avatar
                           }

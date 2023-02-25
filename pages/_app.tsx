@@ -47,7 +47,6 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
       },
     })
       .then(res => {
-        console.log(res.data);
         dispatch(setCurrentUser(res.data));
       })
       .catch(err => {

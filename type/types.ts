@@ -153,3 +153,30 @@ export interface ContextTypes {
   locale: undefined;
   defaultLocale: undefined;
 }
+
+export interface TopBlogTypes {
+  data: {
+    _id: string;
+    title: string;
+    content: string;
+    creatorId: string;
+    imgurl: string;
+    averageScore: number;
+    createdAt: string;
+    updatedAt: string;
+    rateCount: number;
+  }[];
+}
+
+export interface TopWriterTypes {
+  data: {
+    _id: string;
+    username: string;
+    name: string;
+    bio: string;
+    avatar: string;
+    averageScore: number;
+    createdAt: string;
+    updatedAt: string;
+  }[];
+}
