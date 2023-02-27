@@ -4,8 +4,6 @@ import { FC } from 'react';
 import ReactStars from 'react-rating-stars-component';
 
 const TopBlogs: FC<TopBlogTypes> = ({ data: TopBlogData }) => {
-
-
   return (
     <div className="relative w-full h-full flex items-center justify-center">
       <img
@@ -15,38 +13,33 @@ const TopBlogs: FC<TopBlogTypes> = ({ data: TopBlogData }) => {
       />
       <div className=" h-[80%] w-[80%] absolute top-calc(50vh-10px) flex flex-row flex-wrap justify-between gap-4 p-[1rem]">
         {TopBlogData ? (
-          TopBlogData.map((data) => {
+          TopBlogData.map(data => {
             return (
               <>
                 <Link key={data._id} href={`/single_blog/${data._id}`} passHref>
-                <div className="bg-[#232323] w-[350px] h-[300px] flex flex-col items-center hover:scale-105 duration-500 hover:text-[#03C988]">
-                  <div className="flex flex-row items-center">
-                    <div className="avatar avatar-sm avatar-square">
-                      {/* <img
-                      src={'http://localhost:4000/' + data.imgurl}
-                      alt="avatar"
-                    /> */}
+                  <div className="bg-[#232323] w-[350px] h-[300px] flex flex-col items-center hover:scale-105 duration-500 hover:text-[#03C988]">
+                    <div className="flex flex-row items-center">
+                      <div className="avatar avatar-sm avatar-square"></div>
+                      <h2 className="text-xl py-3 font-bold">{data.title}</h2>
                     </div>
-                    <h2 className="text-xl py-3 font-bold">{data.title}</h2>
-                  </div>
-                  <img
-                    onError={({ currentTarget }) => {
-                      currentTarget.onerror = null;
-                      currentTarget.src =
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUW75jyyzX7tVtETUStjCsJkeMXFOpo0xqHaAS4tY0IDldrJZzSgStFUg-n9tKuGGNV4k&usqp=CAU';
-                    }}
-                    className="object-cover w-[300px] h-[200px]"
+                    <img
+                      onError={({ currentTarget }) => {
+                        currentTarget.onerror = null;
+                        currentTarget.src =
+                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUW75jyyzX7tVtETUStjCsJkeMXFOpo0xqHaAS4tY0IDldrJZzSgStFUg-n9tKuGGNV4k&usqp=CAU';
+                      }}
+                      className="object-cover w-[300px] h-[200px]"
                       src={data.imgurl}
-                    alt="/"
-                  />
-                  <ReactStars
+                      alt="/"
+                    />
+                    <ReactStars
                       value={data.averageScore}
                       isHalf={true}
                       size={24}
                       activeColor="#03C988"
                       edit={false}
                     />
-                </div>
+                  </div>
                 </Link>
               </>
             );

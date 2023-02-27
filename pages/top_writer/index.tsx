@@ -1,13 +1,8 @@
-import TopWriterCo from '@/src/components/TopWriter';
+import TopWriterCo from '@/src/components/ui/TopWriter';
 import { TopWriterTypes } from '@/type/types';
 
-
 const TopWriters: React.FC<TopWriterTypes> = ({ data }) => {
-  
-
-  return (
-    <TopWriterCo data={data} />
-  );    
+  return <TopWriterCo data={data} />;
 };
 
 export default TopWriters;

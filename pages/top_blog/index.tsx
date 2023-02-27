@@ -1,6 +1,6 @@
-import TopBlogs from '@/src/components/TopBlog';
+import TopBlogs from '@/src/components/ui/TopBlog';
 import { TopBlogTypes } from '@/type/types';
-import {FC} from 'react';
+import { FC } from 'react';
 
 const TopBlog: FC<TopBlogTypes> = ({ data }) => {
   return (
